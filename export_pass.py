@@ -68,7 +68,13 @@ def main():
                 value = value.strip()
                 if key == 'URL':
                     login_uri = value
-                elif key == 'UserName':
+                elif key.lower() == 'login':
+                    login_username = value
+                elif key.lower() == 'user':
+                    login_username = value
+                elif key.lower() == 'username':
+                    login_username = value
+                elif key.lower() == 'user_name':
                     login_username = value
                 else:
                     print('Putting other key in note: {}: {}'.format(key, value))
