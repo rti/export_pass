@@ -3,6 +3,9 @@ import argparse
 import os
 import subprocess
 import csv
+import re
+
+url_pattern = r'(?:www\.)?([\w-]+\.[\w.-]+)'
 
 def main():
     parser = argparse.ArgumentParser()
@@ -54,6 +57,10 @@ def main():
             lines = subprocess.check_output(['gpg', '-qd', fullpath]).decode().strip().splitlines()
 
             login_password = lines[0]
+
+            match = re.search(url_pattern, name)
+            if match:
+                login_uri = match.group(1) 
 
             for line in lines[1:]:
                 key, value = line.split(':', maxsplit=1)
