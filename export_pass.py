@@ -63,24 +63,36 @@ def main():
                 login_uri = match.group(1) 
 
             for line in lines[1:]:
-                key, value = line.split(':', maxsplit=1)
-                key = key.strip()
-                value = value.strip()
-                if key == 'URL':
-                    login_uri = value
-                elif key.lower() == 'login':
-                    login_username = value
-                elif key.lower() == 'user':
-                    login_username = value
-                elif key.lower() == 'username':
-                    login_username = value
-                elif key.lower() == 'user_name':
-                    login_username = value
-                else:
-                    print('Putting other key in note: {}: {}'.format(key, value))
+                if len(line) == 0:
+                    continue
+
+                print(f"dbg: line: '{line}'")
+
+                try:
+                    key, value = line.split(':', maxsplit=1)
+                    key = key.strip()
+                    value = value.strip()
+                    if key == 'URL':
+                        login_uri = value
+                    elif key.lower() == 'login':
+                        login_username = value
+                    elif key.lower() == 'user':
+                        login_username = value
+                    elif key.lower() == 'username':
+                        login_username = value
+                    elif key.lower() == 'user_name':
+                        login_username = value
+                    else:
+                        print('Putting other key in note: {}: {}'.format(key, value))
+                        if notes:
+                            notes += '\n'
+                        notes += '{}: {}'.format(key, value)
+                except ValueError:
+                    print('Putting value without key into note: {}'.format(line))
                     if notes:
                         notes += '\n'
-                    notes += '{}: {}'.format(key, value)
+                    notes += line
+
 
             # Write to CSV
             values = []
